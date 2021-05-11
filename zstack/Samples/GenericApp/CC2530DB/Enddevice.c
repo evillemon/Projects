@@ -141,6 +141,14 @@ uint16 GenericApp_ProcessEvent( uint8 task_id, uint16 events )
 
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* 函数名  ： GenericApp_SendTheMessage
+* 参数    ： void
+* 返回    ： void
+* 作者    ： Shenfuming
+* 时间    ： 2021/5/11
+* 描述    ： 数据发送函数
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 //数据信息处理器回调。此函数处理任何输入的数据-可能来自其他设备。因此，根据集群ID，执行预期的操作。 
 
 void GenericApp_SendTheMessage(void)

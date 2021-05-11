@@ -68,6 +68,15 @@ byte GenericApp_TransID;
 
 void GenericApp_MessageMSGCB(afIncomingMSGPacket_t *pckt);//声明消息处理函数
 void GenericApp_SendTheMessage(void);//声明数据发送函数
+
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* 函数名  ： GenericApp_Init
+* 参数    ： byte task_id
+* 返回    ： void
+* 作者    ： Shenfuming
+* 时间    ： 2021/5/11
+* 描述    ： 任务初始化函数
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 void GenericApp_Init( byte task_id )    //任务初始化函数，格式较为固定
 {
   
