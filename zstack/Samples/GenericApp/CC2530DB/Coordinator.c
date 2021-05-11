@@ -89,38 +89,42 @@ void GenericApp_Init( byte task_id )    //任务初始化函数，格式较为固定
     afRegister( &GenericApp_epDesc );   //登记注册端点描述
 }
 
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * 函数名： GenericApp_ProcessEvent 
+ * 参数： byte task_id,UINT16 events 
+ * 返回： void 
+ * 作者： fangwei
+ * 描述： 消息处理函数
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
 UINT16 GenericApp_ProcessEvent(byte task_id,UINT16 events) 
 
 {
-    afIncomingMSGPacket_t*MSGpkt;
-//定义一个指向接收消息结构体的指针
-    if (events & SYS_EVENT_MSG )
-    {
-        MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive(GenericApp_TaskID );
-        //接受了消息队列上的消息，包含了指向接收到的无线数据包的指针
+     afIncomingMSGPacket_t*MSGpkt;  //定义一个指向接收消息结构体的指针
+     if (events & SYS_EVENT_MSG )
+     {
+         MSGpkt = (afIncomingMSGPacket_t *)osal_msg_receive(GenericApp_TaskID );
+    //接受了消息队列上的消息，包含了指向接收到的无线数据包的指针
 
-        while ( MSGpkt )
+         while ( MSGpkt )
         {
+             switch ( MSGpkt->hdr.event )
+             {
+             case AF_INCOMING_MSG_CMD:    //对接受的数据进行判断
+                 GenericApp_MessageMSGCB( MSGpkt );   //无线数据的处理，执行信息回调函数
+                 break;
+             default:
+                 break;
+             }
+             osal_msg_deallocate ( (uint8 *) MSGpkt );   //将占据的堆内存释放
+             MSGpkt = (afIncomingMSGPacket_t *) osal_msg_receive(GenericApp_TaskID );
+               //处理完一个消息后，再从消息队列里接收消息
 
-            switch ( MSGpkt->hdr.event )
-            {
-
-            case AF_INCOMING_MSG_CMD://对接受的数据进行判断
-                GenericApp_MessageMSGCB( MSGpkt );//无线数据的处理，执行信息回调函数
-                break;
-            default:
-                break;
-            }
-            osal_msg_deallocate ( (uint8 *) MSGpkt );//将占据的堆内存释放
-            MSGpkt = (afIncomingMSGPacket_t *) osal_msg_receive(GenericApp_TaskID );
-            //再从消息队列接受消息
-        }
-
-        return (events ^ SYS_EVENT_MSG) ;// return unprocessed events 返回没有处理的事件
-    }
-
-        return 0;
-}
+         return (events ^ SYS_EVENT_MSG) ;     //返回未处理的事件
+     }
+         return 0;
+ }
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 * 函数名：GenericApp_MessageMSGCB
 * 参数：afIncomingMSGPacket_t *pkt

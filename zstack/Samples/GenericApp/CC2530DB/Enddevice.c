@@ -50,27 +50,37 @@ void GenericApp_MessageMSGCB( afIncomingMSGPacket_t *pckt );
 void GenericApp_SendTheMessage(void);
 
 
-void GenericApp_Init( uint8 task_id )//通用应用程序初始化
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * 函数名：GenericApp_Init
+ * 参数：uint8 task_id
+ * 作者：fangwei
+ * 返回：void
+ * 描述：通用应用程序初始化
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+
+void GenericApp_Init( uint8 task_id )           //初始化通用应用程序
 {
-  
-    GenericApp_TaskID = task_id;//初始化了任务优先级
  
-    GenericApp_NwkState = DEV_INIT;   //初始化网络状态
+    GenericApp_TaskID = task_id;               //初始化任务优先级
  
-    GenericApp_TransID = 0;//将发送数据包的序列号初始化为0
+    GenericApp_NwkState = DEV_INIT;           //初始化网络状态
  
-    GenericApp_epDesc.endPoint = GENERICAPP_ENDPOINT;//应用程序的端口号
+    GenericApp_TransID = 0;                  //将发送数据包的序列号初始化
  
-    GenericApp_epDesc.task_id = &GenericApp_TaskID;//节点描述符的任务ID
+    GenericApp_epDesc.endPoint = GENERICAPP_ENDPOINT;    //应用程序的端口号
  
-    GenericApp_epDesc.simpleDesc//简单描述符
+    GenericApp_epDesc.task_id = &GenericApp_TaskID;     //节点描述符的任务ID
+ 
+    GenericApp_epDesc.simpleDesc                 //简单描述符
            
         = (SimpleDescriptionFormat_t *)&GenericApp_SimpleDesc;
   
-    GenericApp_epDesc.latencyReq = noLatencyReqs;//延时策略
+    GenericApp_epDesc.latencyReq = noLatencyReqs;      //延时策略
  
     afRegister( &GenericApp_epDesc );
-  //使用afRegister函数将节点描述符进行注册，只有注册以后才可以使用OSAL提供的系统服务
+   
+      //使用afRegister函数将节点描述符进行注册
 }
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 * 函数名：GenericApp_ProcessEvent
